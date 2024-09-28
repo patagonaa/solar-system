@@ -56,7 +56,14 @@ In some cases (for example, when both the PV input and the MCU are ground-refere
 
 Running a wire from the TTL-side ground to the RS485-side ground fixes that issue by giving the stray currents a direct path to flow.
 
-### You Get What You Pay For #2: Inverter
+### You Get What You Pay For #2: Inverter Startup Voltage
 At one point, the inverter just stopped working (when switching it on, it turned off itself after a few seconds). Turns out, there is an (undocumented) "cold start" voltage, that is hard-coded to be ~4V above the low-voltage cutoff. Means, when the low voltage cutoff is set to 45V, the inverter will just not start below ~49V.
 
 Also, the battery voltage readout was wrong by around 0.7V, however that could be fixed through a serial command.
+
+### You Get What You Pay For #3: BMS Communication
+The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 protocol is well-documented and also implemented in ESPHome.
+
+However, as it turns out, the new (2023?) lineup of BMS from DALY (H/K/M/S series) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
+
+After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software has to be written _again_.
