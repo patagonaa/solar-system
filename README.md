@@ -14,11 +14,20 @@ So of course, I picked them up and as expected, the BMS PCBs were corroded to th
 After opening up the packs, letting them dry, cleaning up the limescale/corrosion and balancing them, all of the cells seem to be fine.
 
 ### BMS
-To replace the corroded BMS I decided to get DALY 15S 100A "Smart" BMS modules. To mount them, I designed some adapter / mounting plates that fit the original mounts / standoffs of the Pylontech battery modules.
+To replace the corroded BMS I decided to get DALY 15S 100A "Smart" BMS modules.
+
+#### Mount
+
+To mount the BMS, I designed some adapter / mounting plates that fit the original mounts / standoffs of the Pylontech battery modules.
 
 ![the BMS mounted on a laser-cut wooden board screwed to original battery case standoffs](img/02_bms/05_bms-mounted-crop.jpg)
 
 The design files can be found in `cad/bms-mount`.
+
+#### Protocol
+The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
+
+After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome integration to (hopefully) upstream in [esphome/esphome#7524](https://github.com/esphome/esphome/pull/7524).
 
 ## Inverter
 I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the OEM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
@@ -27,7 +36,9 @@ I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the OEM "
 
 It wouldn't go up to the advertised 6.2kW in my testing (it already showed 99% load at around 5.4kW), but that might be battery current limited due to the relatively low battery voltage (15S LiFe instead of 16S LiFe or lead acid, still 120A!), so in combination with the solar input or with a higher input voltage, it should go even higher.
 
-It also has a RS232/RS485 interface which can be used to read data from the inverter (using a custom mostly-ASCII-based protocol) and which has been implemented by several people already:
+#### Protocol
+
+The inverter has a RS232/RS485 interface which can be used to read data from the inverter (using a custom mostly-ASCII-based protocol) and which has been implemented by several people already:
 
 - https://github.com/jblance/mpp-solar
 - https://esphome.io/components/pipsolar.html
@@ -66,4 +77,4 @@ The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 pr
 
 However, as it turns out, the new (2023?) lineup of BMS from DALY (H/K/M/S series) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
 
-After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software has to be written _again_.
+After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software had to be written _again_ (see [above](#protocol)).
