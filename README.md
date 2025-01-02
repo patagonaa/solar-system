@@ -13,6 +13,20 @@ So of course, I picked them up and as expected, the BMS PCBs were corroded to th
 
 After opening up the packs, letting them dry, cleaning up the limescale/corrosion and balancing them, all of the cells seem to be fine.
 
+### Case
+For transport, the batteries are mounted in a used flight case.
+I'm using an Anderson-style connector as interconnect between battery and inverter (and potentially other loads), which I've mounted towards the outside of the case so it can be used with the lids on.
+
+There are two parts two the mount,
+one that holds the connector (`cad/battery-connector-mount/battery-connector-mount.scad`)
+and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-connector-mount/plug-fill-adapter.scad`).
+The latter is pretty generic, the first is specific to the case and could be edited to make a lot stronger if it doesn't have to fit this specific case.
+
+![screenshot of the connector mount. it's a box around the connector with flanges with countersunk holes for panel mounting](img/04_battery_box/01_cad_connector_mount.jpg)
+![screenshot of a small part with two hex protrusions on a plate](img/04_battery_box/02_adapter.jpg)
+![photo of the front of the mount (with the connector hole and mounting flanges) lying on the flight case. There are two round cutouts for metal parts of the flight case](img/04_battery_box/03_front_on_case.jpg)
+![photo of the flight case with the mounted connector](img/04_battery_box/04_mounted_connector.jpg)
+
 ### BMS
 To replace the corroded BMS I decided to get DALY 15S 100A "Smart" BMS modules.
 
