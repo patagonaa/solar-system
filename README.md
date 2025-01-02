@@ -18,8 +18,8 @@ For transport, the batteries are mounted in a used flight case.
 I'm using an Anderson-style connector as interconnect between battery and inverter (and potentially other loads), which I've mounted towards the outside of the case so it can be used with the lids on.
 
 There are two parts two the mount,
-one that holds the connector (`cad/battery-connector-mount/battery-connector-mount.scad`)
-and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-connector-mount/plug-fill-adapter.scad`).
+one that holds the connector (`cad/battery-box/battery-connector-mount.scad`)
+and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-box/plug-fill-adapter.scad`).
 The latter is pretty generic, the first is specific to the case and could be edited to make a lot stronger if it doesn't have to fit this specific case.
 
 ![screenshot of the connector mount. it's a box around the connector with flanges with countersunk holes for panel mounting](img/04_battery_box/01_cad_connector_mount.jpg)
