@@ -1,18 +1,34 @@
 $fn = $preview ? 16 : 64;
 
+// SB120
+//plateSize = [35, 10, 1];
+//totalHeight = 4;
+//holeDistance = 19.1;
+//hexOuterSize = 10.5;
+//holeDiameter = 5.3;
+
+// SB50
+plateSize = [30.8, 9, 0.5];
+totalHeight = 3.2;
+holeDistance = 19.1;
+hexOuterSize = (5/16 * 25.4) * (2/sqrt(3));
+holeDiameter = 3.2;
+
 difference()
 {
     union()
     {
-        cylinder(h=4, d=10.5, $fn=6);
-        translate([19.1, 0, 0])
-            cylinder(h=4, d=10.5, $fn=6);
+        translate([-holeDistance/2, 0, 0])
+            cylinder(h=totalHeight, d=hexOuterSize, $fn=6);
+        translate([holeDistance/2, 0, 0])
+            cylinder(h=totalHeight, d=hexOuterSize, $fn=6);
            
-        translate([19.1/2,0,0])
-            cube([35,10,1], center=true);
+        translate([0,0,plateSize.z/2])
+            cube(plateSize, center=true);
     }
     
-    cylinder(h=100, d=5.4, center=true);
-    translate([19.1, 0, 0])
-        cylinder(h=100, d=5.3, center=true);
+    translate([-holeDistance/2, 0, 0])
+        cylinder(h=100, d=holeDiameter, center=true);
+    translate([holeDistance/2, 0, 0])
+        cylinder(h=100, d=holeDiameter, center=true);
 }
