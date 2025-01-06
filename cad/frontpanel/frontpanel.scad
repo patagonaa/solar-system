@@ -150,10 +150,10 @@ module sbMount(cutout, sbType)
             sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter);
     } else if (sbType == 50)
     {
-        plugSize = [36.5, 48.1, 16];
+        plugSize = [36.6, 48.1, 16];
         hole1Position = 6.4; //from back
         hole2Position = hole1Position + 19.1;
-        holeDiameter = 3.7;
+        holeDiameter = 3.4;
         
         thickness = 2;
         border = 2;
@@ -163,7 +163,7 @@ module sbMount(cutout, sbType)
         mountPosition = [24, 8];
         
         tabHoleCountersinkHeadDiameter = 6;
-        extraSink = 0.2;
+        extraSink = 0.4;
         tabHoleDiameter = 3.2; // M3 Durchgang
         
         color("grey")

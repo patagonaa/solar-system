@@ -8,11 +8,11 @@ $fn = $preview ? 16 : 64;
 //holeDiameter = 5.3;
 
 // SB50
-plateSize = [30.8, 9, 0.5];
-totalHeight = 3.2;
+plateSize = [29.8, 9, 0.5];
+totalHeight = 3.0;
 holeDistance = 19.1;
 hexOuterSize = (5/16 * 25.4) * (2/sqrt(3));
-holeDiameter = 3.2;
+holeDiameter = 3.4;
 
 difference()
 {
