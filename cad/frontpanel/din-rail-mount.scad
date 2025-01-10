@@ -20,7 +20,7 @@ railScrewHoleDiameter = 3;
 mountWidth = 16;
 
 
-module holder()
+module dinRailMount()
 {
     module mountScrew()
     {
@@ -55,4 +55,4 @@ module holder()
 }
 
 
-holder();
+dinRailMount();

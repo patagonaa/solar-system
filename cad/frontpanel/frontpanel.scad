@@ -1,3 +1,5 @@
+use <din-rail-mount.scad>
+
 $fn = $preview ? 16 : 64;
 
 boxSideSize = [310, 173];
@@ -221,6 +223,24 @@ module banana(cutout)
     }
 }
 
+module dinRailMountFrontpanel(cutout)
+{
+    holeSize = 4.3; // M4
+    mountScrewPos = 31;
+    if(cutout)
+    {
+        translate([0,mountScrewPos])
+            circle(d=holeSize);
+        translate([0,-mountScrewPos])
+            circle(d=holeSize);
+    }
+    else
+    {
+        rotate([0,90,0])
+            dinRailMount();
+    }
+}
+
 module connectors(cutout){
     topPartWidth = (boxSideSize.x - boxHandleSize.x) / 2 / 2;
     
@@ -246,9 +266,19 @@ module connectors(cutout){
 //    translate([boxSideSize.x-topPartWidth, 95])
 //        color("blue")
 //        cube([50, 63, 40], center=true);
+
+    teWidth = 17.8;
+    dinRailMountWidth = 16;
+    te = 7;
     
-    translate([(boxSideSize.x-2)/2 - (8*17.8)/2, 20])
-        dinrail(8, cutout);
+    translate([(boxSideSize.x-2)/2 - (te*teWidth)/2, 20])
+        dinrail(te, cutout);
+
+    translate([(boxSideSize.x-2)/2 - (te*teWidth)/2 - dinRailMountWidth/2, 20 + 89/2])
+        dinRailMountFrontpanel(cutout);
+
+    translate([(boxSideSize.x-2)/2 + (te*teWidth)/2 + dinRailMountWidth/2, 20 + 89/2])
+        dinRailMountFrontpanel(cutout);
 }
 
 //sbMount(false, 50);
