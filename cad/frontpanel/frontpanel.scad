@@ -208,7 +208,7 @@ module connectors(mode){
         else
         {
             translate([0,-24])
-                text("AC Out 1", font=font, size=fontSize, halign="center");
+                text("AC out 1", font=font, size=fontSize, halign="center");
         }
     }
     translate([boxSideSize.x-topPartWidth, 35])
@@ -220,7 +220,7 @@ module connectors(mode){
         else
         {
             translate([0,-24])
-                text("AC Out 2", font=font, size=fontSize, halign="center");
+                text("AC out 2", font=font, size=fontSize, halign="center");
         }
     }
     
@@ -271,7 +271,7 @@ module connectors(mode){
 }
 
 mode = $preview ? 0 : 1; // 0 = 3d preview, 1 = cutouts, 2 = labels
-//mode = 1;
+//mode = 2;
 
 if(mode == 1)
 {
