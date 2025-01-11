@@ -112,14 +112,15 @@ module dinrail(te, cutout){
     }
 }
 
-module banana(cutout)
+module ground(cutout)
 {
+    holeSize = 8.4; // M8
     if(cutout)
     {
-        circle(d=12.2);
+        circle(d=holeSize);
     } else {
         color("grey")
-            cylinder(h=20, d=12.2, center=true);
+            cylinder(h=20, d=holeSize, center=true);
     }
 }
 
@@ -151,7 +152,7 @@ module connectors(cutout){
     translate([topPartWidth, 50])
         sbMount(cutout, 50);
     translate([topPartWidth, 20])
-        banana(cutout);
+        ground(cutout);
     
     translate([boxSideSize.x-topPartWidth, 95])
         powerOut(cutout, true);
