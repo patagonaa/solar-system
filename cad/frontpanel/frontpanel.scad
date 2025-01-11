@@ -86,20 +86,20 @@ module dinrail(te, cutout){
     if(cutout)
     {
         //translate([lssBodySize.x/2, -lssBodySize.y - lssPosition,0])
-        translate([0, lssBodySize.x/2 - (lssProtrusionSize.x/2)])
-            square([te*teWidth, lssProtrusionSize.x]);
+        translate([0, 0])
+            square([te*teWidth, lssProtrusionSize.x], center=true);
     } else {
         rotate([90,0,90])
-            translate([lssBodySize.x/2, -lssBodySize.y - lssPosition,0])
+            translate([0, -lssBodySize.y - lssPosition,0])
             union(){
                 color("grey")
-                linear_extrude(te*teWidth){
+                linear_extrude(te*teWidth, center = true){
                     translate([-railHeight/2, 0])
                         square([railHeight, railDepth]);
                 }
                 
                 color("lightgrey")
-                linear_extrude(te*teWidth){
+                linear_extrude(te*teWidth, center = true){
                     union(){
                         translate([-lssBodySize.x/2, lssPosition])
                             square(lssBodySize);
@@ -259,14 +259,17 @@ module connectors(mode){
     
     if(mode != 2)
     {
-        translate([(boxSideSize.x-2)/2 - (te*teWidth)/2, 20, -frontPanelThickness])
+        translate([(boxSideSize.x-2)/2 , (boxSideSize.y - boxHandleSize.y) / 2])
+        {
+        translate([0, 0, -frontPanelThickness])
             dinrail(te, mode == 1);
 
-        translate([(boxSideSize.x-2)/2 - (te*teWidth)/2 - dinRailMountWidth/2, 20 + 89/2, -frontPanelThickness])
+        translate([- (te*teWidth)/2 - dinRailMountWidth/2, 0, -frontPanelThickness])
             dinRailMountFrontpanel(mode == 1);
 
-        translate([(boxSideSize.x-2)/2 + (te*teWidth)/2 + dinRailMountWidth/2, 20 + 89/2, -frontPanelThickness])
+        translate([+ (te*teWidth)/2 + dinRailMountWidth/2, 0, -frontPanelThickness])
             dinRailMountFrontpanel(mode == 1);
+        }
     }
 }
 
