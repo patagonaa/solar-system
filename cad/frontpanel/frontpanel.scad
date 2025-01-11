@@ -142,27 +142,112 @@ module dinRailMountFrontpanel(cutout)
     }
 }
 
-module connectors(cutout){
+font = "Liberation Sans:style=bold";
+fontSize = 4.2;
+
+frontPanelThickness = 1;
+
+module connectors(mode){
     topPartWidth = (boxSideSize.x - boxHandleSize.x) / 2 / 2;
     
     translate([topPartWidth - 16, 95])
-        powerIn(cutout, false);
+    {    
+        if(mode != 2)
+        {
+            powerIn(mode == 1, false);
+        }
+        else
+        {
+            translate([0,-22])
+                text("Inverter in", font=font, size=fontSize, halign="center");
+        }
+    }
     translate([topPartWidth + 16, 95])
-        powerIn(cutout, false);
+    {
+        if(mode != 2)
+        {
+            powerIn(mode == 1, false);
+        }
+        else
+        {
+            translate([0,-22])
+                text("PSU in", font=font, size=fontSize, halign="center");
+        }
+    }
     translate([topPartWidth, 50])
-        sbMount(cutout, 50);
+    {
+        if(mode != 2)
+        {
+            sbMount(mode == 1, 50);
+        }
+        else
+        {
+            translate([0,-18])
+                text("PV in", font=font, size=fontSize, halign="center");
+        }
+    }
     translate([topPartWidth, 20])
-        ground(cutout);
+    {
+        if(mode != 2)
+        {
+            ground(mode == 1);
+        }
+        else
+        {
+            translate([0,-11])
+                text("⏚", font="Segoe UI Symbol:style=Bold", size=fontSize+1, halign="center");
+        }
+    }
     
     translate([boxSideSize.x-topPartWidth, 95])
-        powerOut(cutout, true);
+    {
+        if(mode != 2)
+        {
+            powerOut(mode == 1, false);
+        }
+        else
+        {
+            translate([0,-24])
+                text("AC Out 1", font=font, size=fontSize, halign="center");
+        }
+    }
     translate([boxSideSize.x-topPartWidth, 35])
-        powerOut(cutout, true);
+    {
+        if(mode != 2)
+        {
+            powerOut(mode == 1, false);
+        }
+        else
+        {
+            translate([0,-24])
+                text("AC Out 2", font=font, size=fontSize, halign="center");
+        }
+    }
     
     translate([topPartWidth,154])
-        sbMount(cutout, 120);
+    {
+        if(mode != 2)
+        {
+            sbMount(mode == 1, 120);
+        }
+        else
+        {
+            translate([0,-23])
+                text("Battery", font=font, size=fontSize, halign="center");
+        }
+    }
     translate([boxSideSize.x-topPartWidth,154])
-        sbMount(cutout, 120);
+    {
+        if(mode != 2)
+        {
+            sbMount(mode == 1, 120);
+        }
+        else
+        {
+            translate([0,-23])
+                text("Battery", font=font, size=fontSize, halign="center");
+        }
+    }
     
 //    translate([boxSideSize.x-topPartWidth, 95])
 //        color("blue")
@@ -172,23 +257,48 @@ module connectors(cutout){
     dinRailMountWidth = 16;
     te = 7;
     
-    translate([(boxSideSize.x-2)/2 - (te*teWidth)/2, 20])
-        dinrail(te, cutout);
+    if(mode != 2)
+    {
+        translate([(boxSideSize.x-2)/2 - (te*teWidth)/2, 20, -frontPanelThickness])
+            dinrail(te, mode == 1);
 
-    translate([(boxSideSize.x-2)/2 - (te*teWidth)/2 - dinRailMountWidth/2, 20 + 89/2])
-        dinRailMountFrontpanel(cutout);
+        translate([(boxSideSize.x-2)/2 - (te*teWidth)/2 - dinRailMountWidth/2, 20 + 89/2, -frontPanelThickness])
+            dinRailMountFrontpanel(mode == 1);
 
-    translate([(boxSideSize.x-2)/2 + (te*teWidth)/2 + dinRailMountWidth/2, 20 + 89/2])
-        dinRailMountFrontpanel(cutout);
+        translate([(boxSideSize.x-2)/2 + (te*teWidth)/2 + dinRailMountWidth/2, 20 + 89/2, -frontPanelThickness])
+            dinRailMountFrontpanel(mode == 1);
+    }
 }
 
-//sbMount(false, 50);
+mode = $preview ? 0 : 1; // 0 = 3d preview, 1 = cutouts, 2 = labels
+//mode = 1;
 
-if($preview){
-    connectors(false);
+if(mode == 1)
+{
+    difference(){
+        frontpanel();
+        connectors(mode);
+    }
 }
-
-difference(){
-    frontpanel();
-    connectors(true);
+else if(mode == 2)
+{
+    connectors(mode);
+}
+else
+{
+    translate([0,0,-frontPanelThickness])
+        linear_extrude(frontPanelThickness)
+        {
+            difference(){
+                frontpanel();
+                connectors(1);
+            }
+        }
+    
+    color("black")
+        linear_extrude(1)
+        {
+            connectors(2);
+        }
+    connectors(0);
 }
