@@ -1,6 +1,6 @@
 $fn = $preview ? 16 : 64;
 
-module sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter)
+module sbMountA(cutout, holeTolerance, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter)
 {
     module hole()
     {
@@ -16,7 +16,7 @@ module sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, th
     
     if(cutout)
     {
-        square([plugSize.x+thickness*2,plugSize.z+thickness*2], center=true);
+        square([plugSize.x + thickness*2 + holeTolerance,plugSize.z + thickness*2 + holeTolerance], center=true);
         translate([-mountPosition.x,-mountPosition.y])
             circle(d=tabHoleDiameter);
         translate([mountPosition.x,-mountPosition.y])
@@ -56,7 +56,7 @@ module sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, th
     }        
 }
 
-module sbMount(cutout, sbType)
+module sbMount(cutout, sbType, holeTolerance)
 {
     if(sbType == 120)
     {
@@ -77,7 +77,7 @@ module sbMount(cutout, sbType)
         tabHoleDiameter = 5.3; // M5 Durchgang
         
         color("grey")
-            sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter);
+            sbMountA(cutout, holeTolerance, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter);
     } else if (sbType == 50)
     {
         plugSize = [36.6, 48.1, 16];
@@ -97,9 +97,9 @@ module sbMount(cutout, sbType)
         tabHoleDiameter = 3.2; // M3 Durchgang
         
         color("grey")
-            sbMountA(cutout, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter);
+            sbMountA(cutout, holeTolerance, plugSize, hole1Position, hole2Position, holeDiameter, thickness, border, tabWidth, mountPosition, tabHoleCountersinkHeadDiameter, extraSink, tabHoleDiameter);
     }
 }
 
-//sbMount(false, 50);
-sbMount(false, 120);
+//sbMount(false, 50, 0);
+sbMount(false, 120, 0);

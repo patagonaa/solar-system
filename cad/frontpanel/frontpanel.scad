@@ -3,6 +3,8 @@ use <sbmount.scad>
 
 $fn = $preview ? 16 : 64;
 
+holeTolerance = 0.2;
+
 boxSideSize = [310, 173];
 boxHandleSize = [145, 36];
 
@@ -28,7 +30,7 @@ module powerIn(cutout, cap){
     holeY = 24/2;
     
     if(cutout){
-        circle(d=23.8);
+        circle(d=23.8 + holeTolerance);
         translate([-holeX, holeY])
             circle(d=3.2);
         translate([holeX, -holeY])
@@ -52,7 +54,7 @@ module powerOut(cutout, cap){
     holePos = 24.4/2;
     
     if(cutout){
-        circle(d=28.7);
+        circle(d=28.7 + holeTolerance);
         translate([-holePos, holePos])
             circle(d=3.2);
         translate([holePos, -holePos])
@@ -87,7 +89,7 @@ module dinrail(te, cutout){
     {
         //translate([lssBodySize.x/2, -lssBodySize.y - lssPosition,0])
         translate([0, 0])
-            square([te*teWidth, lssProtrusionSize.x], center=true);
+            square([te*teWidth + holeTolerance, lssProtrusionSize.x + holeTolerance], center=true);
     } else {
         rotate([90,0,90])
             translate([0, -lssBodySize.y - lssPosition,0])
@@ -178,7 +180,7 @@ module connectors(mode){
     {
         if(mode != 2)
         {
-            sbMount(mode == 1, 50);
+            sbMount(mode == 1, 50, holeTolerance);
         }
         else
         {
@@ -228,7 +230,7 @@ module connectors(mode){
     {
         if(mode != 2)
         {
-            sbMount(mode == 1, 120);
+            sbMount(mode == 1, 120, holeTolerance);
         }
         else
         {
@@ -240,7 +242,7 @@ module connectors(mode){
     {
         if(mode != 2)
         {
-            sbMount(mode == 1, 120);
+            sbMount(mode == 1, 120, holeTolerance);
         }
         else
         {
