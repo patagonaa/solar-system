@@ -287,6 +287,12 @@ if(mode == 1)
 }
 else if(mode == 2)
 {
+    difference()
+    {
+        frontpanel();
+        offset(-1)
+            frontpanel();
+    }
     connectors(mode);
 }
 else

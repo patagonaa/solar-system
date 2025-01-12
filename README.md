@@ -63,9 +63,15 @@ The inverter will be mounted in a 60x40x22cm euro container for easy transport a
 CAD planning is done in `cad/box`.
 
 #### Front Panel
-There will be a front panel exposing all the important connections (DC, AC, PV) on the short side of the euro container.
+There is a laser-cut front panel exposing all the important connections (DC, AC, PV) on the short side of the euro container.
 
 CAD planning is done in `cad/frontpanel`.
+
+![OpenSCAD screenshot of the front panel (see german Mastodon post for better alt text)](img/05_inverter_box/frontpanel-scad-1.png)
+![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-2.png)
+![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-3.png)
+![Photo of the empty laser-cut frontpanel on the side of the euro container](img/05_inverter_box/test-fit-box.jpg)
+![Photo of the laser-cut frontpanel with some connectors and a circuit breaker fitted](img/05_inverter_box/test-fit-connectors.jpg)
 
 
 ## Lessons Learned
