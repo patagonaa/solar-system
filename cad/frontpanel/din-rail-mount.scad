@@ -8,7 +8,7 @@ height = 45; // front of rail to device terminals
 mountScrewPos = 31;
 mountScrewHeight = 4;
 mountScrewDiameter = 4.3;
-mountScreqNutSize = 7.1 * (2/sqrt(3)); // M4
+mountScrewNutSize = 7.1 * (2/sqrt(3)); // M4
 
 railInner = 24;
 railOuter = 35.5;
@@ -30,7 +30,7 @@ module dinRailMount()
         
         translate([mountScrewHeight,0,0])
             rotate([0,90,0])
-            cylinder(h=100, d=mountScreqNutSize, $fn=6);
+            cylinder(h=100, d=mountScrewNutSize, $fn=6);
     }
     
     difference(){

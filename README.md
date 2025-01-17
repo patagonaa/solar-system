@@ -58,21 +58,30 @@ The inverter has a RS232/RS485 interface which can be used to read data from the
 - https://esphome.io/components/pipsolar.html
 
 ### Inverter Box
-The inverter will be mounted in a 60x40x22cm euro container for easy transport and water-resistance, along with all the other necessary support hardware (circuit breakers, etc.).
+The inverter is mounted on a plate in a 60x40x22cm euro container for easy transport and (at least minimal) water-resistance,
+along with all the other necessary support hardware (circuit breakers, etc.).
 
-CAD planning is done in `cad/box`.
+Files in `cad/box`.
 
 #### Front Panel
 There is a laser-cut front panel exposing all the important connections (DC, AC, PV) on the short side of the euro container.
 
-CAD planning is done in `cad/frontpanel`.
+Files in `cad/frontpanel`.
 
 ![OpenSCAD screenshot of the front panel (see german Mastodon post for better alt text)](img/05_inverter_box/frontpanel-scad-1.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-2.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-3.png)
-![Photo of the empty laser-cut frontpanel on the side of the euro container](img/05_inverter_box/test-fit-box.jpg)
-![Photo of the laser-cut frontpanel with some connectors and a circuit breaker fitted](img/05_inverter_box/test-fit-connectors.jpg)
+![Photo of the laser-cut frontpanel on the side of the euro container with most of the connectors fitted](img/05_inverter_box/frontpanel.jpg)
 
+#### Air Duct
+To prevent overheating, an air duct was designed (in Fusion) and 3D printed to direct the warm air from the
+inverter fans directly out the Eurobox handle.
+
+Files in `cad/air-duct`.
+
+![Photo of the inside of the Eurobox. Between the inverter and the Eurobox is a neon orange 3D-printed air duct that curves from the fan outlet of the inverter to the Eurobox handle.](img/05_inverter_box/air-duct-1.jpg)
+![Second view, the part is positioned with an edge at the top of the inverter and also has a flat area to the left and right of the fans for better sealing.](img/05_inverter_box/air-duct-2.jpg)
+![View from the outside, the orange 3D printed part fits perfectly into the Eurobox handle](img/05_inverter_box/air-duct-3.jpg)
 
 ## Lessons Learned
 

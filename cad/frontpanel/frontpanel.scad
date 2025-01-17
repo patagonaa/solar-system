@@ -77,12 +77,12 @@ module powerOut(cutout, cap){
 
 module dinrail(te, cutout){
     teWidth = 17.8;
-    railDepth = 7.5;
+    railDepth = 7.2;
     railHeight = 35;
     
-    lssPosition = 1.2;
+    lssPosition = 6.2;
     
-    lssBodySize = [89, 50];
+    lssBodySize = [89, 45];
     lssProtrusionSize = [45, 72];
     
     if(cutout)
