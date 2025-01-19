@@ -1,9 +1,9 @@
 $fn = $preview ? 16 : 64;
 
-tolerance = 0.2;
+tolerance = 0.3;
 
 rj45boardSize = [34.2+tolerance, 28+tolerance, 1.4+tolerance];
-rj45holeDiameter = 3.0 - tolerance;
+rj45holeDiameter = 2.8 - tolerance;
 rj45holeWidthDistance = 28;
 rj45hole1FrontPosition = -5.5;
 rj45hole2FrontPosition = -16.5;
@@ -11,9 +11,10 @@ rj45hole2FrontPosition = -16.5;
 module rj45breakout()
 {
     rj45jackCutout = 5;
-    boardThickness = 1.4;
+    boardThickness = 1.6;
     rj45jackSize = [15.8, 18.3 + rj45jackCutout, 13.0];
     rj45jackBottomDepth = 2.5;
+    rj45jackBottomExtraWidth = 4;
     
     rj45PinsSize = [25, 6, 2];
     rj45PinsExtraSize = 4;
@@ -27,9 +28,9 @@ module rj45breakout()
         translate([-rj45jackSize.x/2, -rj45jackSize.y + rj45jackCutout, 0])
             color("grey")
             cube(rj45jackSize);
-        translate([-rj45jackSize.x/2, -rj45jackSize.y, -boardThickness-rj45jackBottomDepth])
+        translate([-rj45jackSize.x/2 - rj45jackBottomExtraWidth/2, -rj45jackSize.y, -boardThickness-rj45jackBottomDepth])
             color("grey")
-            cube([rj45jackSize.x, rj45jackSize.y, rj45jackBottomDepth]);
+            cube([rj45jackSize.x+rj45jackBottomExtraWidth, rj45jackSize.y, rj45jackBottomDepth]);
             
         translate([-rj45PinsSize.x/2,-rj45boardSize.y-rj45PinsExtraSize, -boardThickness-rj45PinsSize.z])
             color("grey")
@@ -48,13 +49,13 @@ module rj45breakout()
     }
 }
 
-ttgo485Size = [35+tolerance, 80.5+tolerance];
+ttgo485Size = [35+tolerance, 81+tolerance];
 ttgo485BoardThickness = 1.2;
 ttgo485BoardTopMaxThickness = 3.3;
 ttgo485BoardBottomMaxThickness = 2.5;
 
-usbCSize = [7.4 + 10, 9+tolerance, 3.2+tolerance];
-usbCPosY = 22-tolerance/2;
+usbCSize = [7.4 + 10, 9.5+tolerance, 3.2+tolerance];
+usbCPosY = 21.75-tolerance/2;
 usbCPosX = 5.5;
 
 module ttgo485()
@@ -62,14 +63,14 @@ module ttgo485()
     translate([-ttgo485Size.x/2, -ttgo485Size.y, -ttgo485BoardThickness])
         cube([ttgo485Size.x, ttgo485Size.y, ttgo485BoardThickness]);
     
-    powerConnectorSize = [9, 19, 11.2];
-    powerConnectorPos = [9.5, 5, -2.2];
-    translate([ttgo485Size.x/2 - powerConnectorPos.x, -powerConnectorPos.y, powerConnectorPos.z])
+    powerConnectorSize = [9, 21, 12];
+    powerConnectorPos = [9.5, 7, -2.2];
+    translate([-ttgo485Size.x/2 - powerConnectorSize.x + powerConnectorPos.x, -powerConnectorPos.y, powerConnectorPos.z])
         color("grey")
         cube(powerConnectorSize);
     
-    dataConnectorSize = [12.4, 17, 11.2];
-    dataConnectorPos = [13.2, 5, -2.2];
+    dataConnectorSize = [12.4, 19, 12];
+    dataConnectorPos = [13.2, 7, -2.2];
     translate([ttgo485Size.x/2 - dataConnectorPos.x, -ttgo485Size.y - dataConnectorSize.y +dataConnectorPos.y, dataConnectorPos.z])
         color("grey")
         minkowski()
@@ -168,7 +169,7 @@ module diffPart()
         cube([caseSize.x, ttgo485Size.y, caseSize.z]);
     
     translate([-ttgo485Size.x/2 - usbCSize.x + usbCPosX, ttgo485Size.y -usbCSize.y + -usbCPosY + 0.01, boardPosZ + ttgo485BoardThickness+0.01])
-        cube([usbCSize.x, usbCSize.y -0.01, caseSize.z]);
+        cube([usbCSize.x, usbCSize.y -0.02, caseSize.z]);
 }
 
 if($preview){
