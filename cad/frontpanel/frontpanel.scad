@@ -9,11 +9,22 @@ boxSideSize = [310, 173];
 boxHandleSize = [145, 36];
 
 module boxSide(){
-    color("lightgrey")
-    difference(){
-        square(boxSideSize);
-        translate([boxSideSize.x/2 - boxHandleSize.x/2, boxSideSize.y - boxHandleSize.y,0])
-            square(boxHandleSize);
+
+    points = [
+        [0,0],
+        [0, boxSideSize.y],
+        [(boxSideSize.x-boxHandleSize.x)/2, boxSideSize.y],
+        [(boxSideSize.x-boxHandleSize.x)/2, boxSideSize.y - boxHandleSize.y],
+        [(boxSideSize.x)/2, boxSideSize.y - boxHandleSize.y],
+        [(boxSideSize.x)/2, 0],
+    ];
+    
+    polygon(points);
+    translate([boxSideSize.x/2,0])
+    {
+        mirror([1,0,0])
+            translate([-boxSideSize.x/2,0])
+            polygon(points);
     }
 }
 
