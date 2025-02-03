@@ -3,27 +3,29 @@ use <sbmount.scad>
 
 $fn = $preview ? 16 : 64;
 
-holeTolerance = 0.2;
+holeTolerance = 0.1;
 
-boxSideSize = [310, 173];
-boxHandleSize = [145, 36];
+boxSideWidth = 310;
 
 module boxSide(){
 
     points = [
         [0,0],
-        [0, boxSideSize.y],
-        [(boxSideSize.x-boxHandleSize.x)/2, boxSideSize.y],
-        [(boxSideSize.x-boxHandleSize.x)/2, boxSideSize.y - boxHandleSize.y],
-        [(boxSideSize.x)/2, boxSideSize.y - boxHandleSize.y],
-        [(boxSideSize.x)/2, 0],
+        [0, 176],
+        [40,175],
+        [55, 173.8],
+        [83, 172],
+        [83, 138],
+        [100, 137],
+        [boxSideWidth/2, 136],
+        [boxSideWidth/2, 0],
     ];
     
     polygon(points);
-    translate([boxSideSize.x/2,0])
+    translate([boxSideWidth/2,0])
     {
         mirror([1,0,0])
-            translate([-boxSideSize.x/2,0])
+            translate([-boxSideWidth/2,0])
             polygon(points);
     }
 }
@@ -31,7 +33,7 @@ module boxSide(){
 //boxSide();
 
 module frontpanel(){
-        offset(-1){
+        offset(-0.5){
             boxSide();
         }
 }
