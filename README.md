@@ -71,7 +71,7 @@ Files in `cad/frontpanel`.
 ![OpenSCAD screenshot of the front panel (see german Mastodon post for better alt text)](img/05_inverter_box/frontpanel-scad-1.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-2.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-3.png)
-![Photo of the laser-cut frontpanel on the side of the euro container with most of the connectors fitted](img/05_inverter_box/frontpanel.jpg)
+![Photo of the laser-cut frontpanel on the side of the euro container with all of the connectors fitted](img/05_inverter_box/frontpanel.jpg)
 
 #### Air Duct
 To prevent overheating, an air duct was designed (in Fusion) and 3D printed to direct the warm air from the
