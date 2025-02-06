@@ -6,6 +6,8 @@ $fn = $preview ? 16 : 64;
 holeTolerance = 0.1;
 
 boxSideWidth = 310;
+boxSideSize = [310, 173];
+boxHandleSize = [145, 36];
 
 module boxSide(){
 
