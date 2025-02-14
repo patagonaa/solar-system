@@ -47,7 +47,7 @@ module partHalf()
         translate([0,0,partHeight-topScrewInnerLength +0.01])
             cylinder(d=topScrewDiameter, h=topScrewInnerLength);
         translate([0,0,partHeight - topScrewNutPos - topScrewNutHeight])
-        cylinder(d=topScrewNutDiameter, h=topScrewNutHeight, $fn = 6);
+            cylinder(d=topScrewNutDiameter, h=topScrewNutHeight, $fn = 6);
         
         translate([bottomLength/2-earWidth/2, 0, 0])
         {
@@ -56,7 +56,7 @@ module partHalf()
             {
                 cylinder(h=1000, d=bottomScrewHeadDiameter);
                 translate([0,0,-bottomScrewSinkDepth + 0.01])
-                    cylinder(h=bottomScrewSinkDepth, d1=0, d2=8);
+                    cylinder(h=bottomScrewSinkDepth, d1=0, d2=bottomScrewHeadDiameter);
             }
         }
     }
