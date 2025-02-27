@@ -55,14 +55,14 @@ ttgo485BoardTopMaxThickness = 3.3;
 ttgo485BoardBottomMaxThickness = 2.5;
 
 usbCSize = [7.4 + 10, 9.5+tolerance, 3.4+tolerance];
-usbCPosY = 21.75-tolerance/2;
+usbCPosY = 22-tolerance/2;
 usbCPosX = 5.5;
 
 connectorPins = 2.2;
 connectorExtraLength = 3;
 
-powerConnectorSize = [9, 9.2 + connectorExtraLength, ttgo485BoardThickness + 7.2];
-powerConnectorPos = [9.5, 5 + connectorExtraLength, -ttgo485BoardThickness];
+powerConnectorSize = [9, 9.2 + connectorExtraLength, 7.2];
+powerConnectorPos = [9.5, 5 + connectorExtraLength, 0];
 
 module ttgo485()
 {    
@@ -75,22 +75,22 @@ module ttgo485()
         {
             union(){
                 cube(powerConnectorSize);
-                translate([0,0,-connectorPins])
-                    cube([powerConnectorSize.x, powerConnectorPos.y, connectorPins]);
+                translate([0,0,-connectorPins - ttgo485BoardThickness])
+                    cube([powerConnectorSize.x, powerConnectorPos.y, connectorPins + ttgo485BoardThickness]);
             }
             sphere(tolerance);
         }
     
-    dataConnectorSize = [12.4, 9.2 + connectorExtraLength, ttgo485BoardThickness + 7.2];
-    dataConnectorPos = [13.2, 5 + connectorExtraLength, -ttgo485BoardThickness];
+    dataConnectorSize = [12.4, 9.2 + connectorExtraLength, 7.2];
+    dataConnectorPos = [13.2, 5 + connectorExtraLength, 0];
     translate([ttgo485Size.x/2 - dataConnectorPos.x, -ttgo485Size.y - dataConnectorSize.y +dataConnectorPos.y, dataConnectorPos.z])
         color("grey")
         minkowski()
         {
             union(){
                 cube(dataConnectorSize);
-                translate([0,dataConnectorSize.y - dataConnectorPos.y,-connectorPins])
-                    cube([dataConnectorSize.x, dataConnectorPos.y, connectorPins]);
+                translate([0,dataConnectorSize.y - dataConnectorPos.y,-connectorPins - ttgo485BoardThickness])
+                    cube([dataConnectorSize.x, dataConnectorPos.y, connectorPins + ttgo485BoardThickness]);
             }
             sphere(tolerance);
         }
@@ -101,8 +101,8 @@ module ttgo485()
         {
             union(){
                 cube(dataConnectorSize);
-                translate([0,dataConnectorSize.y - dataConnectorPos.y,-connectorPins])
-                    cube([dataConnectorSize.x, dataConnectorPos.y, connectorPins]);
+                translate([0,dataConnectorSize.y - dataConnectorPos.y,-connectorPins - ttgo485BoardThickness])
+                    cube([dataConnectorSize.x, dataConnectorPos.y, connectorPins + ttgo485BoardThickness]);
             }
             sphere(tolerance);
         }
@@ -122,7 +122,7 @@ moduleDistance = 20;
 
 boardPosZ = 4;
 
-caseSize = [ttgo485Size.x, ttgo485Size.y, 20];
+caseSize = [ttgo485Size.x, ttgo485Size.y, 16];
 caseThickness = 2;
 module case()
 {
@@ -224,9 +224,6 @@ intersection()
 
 if($preview)
 {
-    translate([0, ttgo485Size.y + rj45boardSize.y + moduleDistance, boardPosZ + rj45boardSize.z])
-        rj45breakout();
-
     translate([0, ttgo485Size.y, boardPosZ + ttgo485BoardThickness])
         ttgo485();
     
