@@ -2,7 +2,7 @@ $fn = $preview ? 16 : 64;
 
 tolerance = 0.3;
 
-rj45boardSize = [34.2+tolerance, 28+tolerance, 1.4+tolerance];
+rj45boardSize = [34.2+tolerance, 28+tolerance, 1.3+tolerance];
 rj45holeDiameter = 2.8 - tolerance;
 rj45holeWidthDistance = 28;
 rj45hole1FrontPosition = -5.5;
@@ -14,7 +14,6 @@ rj45PinsExtraSize = 4;
 module rj45breakout()
 {
     rj45jackCutout = 5;
-    boardThickness = 1.6;
     rj45jackSize = [15.8, 18.3 + rj45jackCutout, 13.0];
     rj45jackBottomDepth = 2.5;
     rj45jackBottomExtraWidth = 4;
@@ -28,11 +27,11 @@ module rj45breakout()
         translate([-rj45jackSize.x/2, -rj45jackSize.y + rj45jackCutout, 0])
             color("grey")
             cube(rj45jackSize);
-        translate([-rj45jackSize.x/2 - rj45jackBottomExtraWidth/2, -rj45jackSize.y, -boardThickness-rj45jackBottomDepth])
+        translate([-rj45jackSize.x/2 - rj45jackBottomExtraWidth/2, -rj45jackSize.y, -rj45boardSize.z-rj45jackBottomDepth+0.01])
             color("grey")
             cube([rj45jackSize.x+rj45jackBottomExtraWidth, rj45jackSize.y, rj45jackBottomDepth]);
             
-        translate([-rj45PinsSize.x/2,-rj45boardSize.y-rj45PinsExtraSize, -boardThickness-rj45PinsSize.z])
+        translate([-rj45PinsSize.x/2,-rj45boardSize.y-rj45PinsExtraSize, -rj45boardSize.z-rj45PinsSize.z+0.01])
             color("grey")
             cube([rj45PinsSize.x, rj45PinsSize.y + rj45PinsExtraSize, rj45PinsSize.z]);
             
@@ -136,7 +135,7 @@ moduleDistance = 16;
 
 boardPosZ = 2.5;
 
-caseSize = [rj45boardSize.x, rj45boardSize.y + moduleDistance, 21.4];
+caseSize = [rj45boardSize.x, rj45boardSize.y + moduleDistance, 21.2];
 caseThickness = 2;
 module case()
 {
@@ -166,7 +165,7 @@ module case()
             translate([rj45boardSize.x/2 - rj45HolderThickness, caseSize.y - rj45HolderWidth, boardPosZ])
                 cube([rj45HolderThickness, rj45HolderWidth, caseSize.z - boardPosZ]); // pcb holder
             translate([-caseSize.x/2, caseSize.y - rj45boardSize.y, 0])
-                cube([caseSize.x, rj45boardSize.y, rj45boardSize.z]); // part under pcb
+                cube([caseSize.x, rj45boardSize.y, rj45boardSize.z + boardPosZ]); // part under pcb
             translate([-25/2, 0, 0])
                 cube([25, 1.5, caseSize.z-2]); // holder for hex nut
         }
