@@ -1,5 +1,11 @@
 $fn = $preview ? 16 : 64;
 
+// V2 gedruckt am 27.02.2025
+// V2.1:
+// - USB-C-Position noch bisschen korrigiert
+// - Position der Buchsen gefixt (fangen auf Oberseite vom Board an, nicht Unterseite)
+// - Gesamthöhe reduziert (war für die Ethernet-Buchse so hoch)
+
 tolerance = 0.3;
 
 rj45boardSize = [34.2+tolerance, 28+tolerance, 1.4+tolerance];
