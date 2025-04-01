@@ -41,7 +41,7 @@ The design files can be found in `cad/bms-mount`.
 #### Protocol
 The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
 
-After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome integration to (hopefully) upstream in [esphome/esphome#7524](https://github.com/esphome/esphome/pull/7524).
+After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome component which I've released under [patagonaa/esphome-daly-hkms-bms](patagonaa/esphome-daly-hkms-bms).
 
 ## Inverter
 I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the OEM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
@@ -66,7 +66,7 @@ Files in `cad/box`.
 #### Front Panel
 There is a laser-cut front panel exposing all the important connections (DC, AC, PV) on the short side of the euro container.
 
-Files in `cad/frontpanel`.
+Files in `cad/frontpanel` (also includes the SB50/SB120 mounts, DIN rail mounts, etc.).
 
 ![OpenSCAD screenshot of the front panel (see german Mastodon post for better alt text)](img/05_inverter_box/frontpanel-scad-1.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-2.png)
@@ -82,6 +82,21 @@ Files in `cad/air-duct`.
 ![Photo of the inside of the Eurobox. Between the inverter and the Eurobox is a neon orange 3D-printed air duct that curves from the fan outlet of the inverter to the Eurobox handle.](img/05_inverter_box/air-duct-1.jpg)
 ![Second view, the part is positioned with an edge at the top of the inverter and also has a flat area to the left and right of the fans for better sealing.](img/05_inverter_box/air-duct-2.jpg)
 ![View from the outside, the orange 3D printed part fits perfectly into the Eurobox handle](img/05_inverter_box/air-duct-3.jpg)
+
+## PSU
+To be able to limit the AC power input (for charging the batteries with a small generator) a Huawei R4830 PSU has been added to the inverter box as well. See the Mastodon thread and separate [Github Repo](https://github.com/patagonaa/huawei-r48xx) as well.
+
+![Photo of the second level of the inverter box. A laminated board is mounted on the base plate with 3D printed spacers. The PSU, an ESP32, circuit breakers and power distribution blocks are mounted on the plate.](img/05_inverter_box/top-level.jpg)
+
+## Misc other CAD parts
+- `din-rail-plug`: Part that fits into the cutout for the DIN rail parts so not each unit has to be filled
+- `esp-box`: Case that fits a LilyGO TTGO T-CAN485 board (with CAN bus and RS485) and an RJ45 breakout board for the inverter RS485
+    - v2 splits ESP and breakout board in separate cases
+- `cad/battery-bus-mount`: Mount for pluggable screw clamps which fits in the Battery RJ45 hole to interface with the BMS RS485
+- `cad/battery-connector-mount`: Mount for an Anderson Powerpole connector which fits in the Battery RJ45 hole to power an ESP32
+- `cad/lxcharger-end-cap`: End cap to replace the default barrel jack of an LXCHARGER H65AC with an XT30.
+- `cad/mcb-mount`: Part to mount din-rail miniature circuit breakers on a board sideways
+- `cad/top-holder`: Holder to mount a board above the inverter to have make space for the PSU, power distribution blocks, etc. (printed with a pause to insert screw nut).
 
 ## Lessons Learned
 
@@ -99,7 +114,7 @@ Running a wire from the TTL-side ground to the RS485-side ground fixes that issu
 ### You Get What You Pay For #2: Inverter Startup Voltage
 At one point, the inverter just stopped working (when switching it on, it turned off itself after a few seconds). Turns out, there is an (undocumented) "cold start" voltage, that is hard-coded to be ~4V above the low-voltage cutoff. Means, when the low voltage cutoff is set to 45V, the inverter will just not start below ~49V.
 
-Also, the battery voltage readout was wrong by around 0.7V, however that could be fixed through a serial command.
+Also, the battery voltage readout was wrong by around 0.7V, however that could be fixed through a serial command (can be sent using [mpp-solar](https://github.com/jblance/mpp-solar): `mpp-solar --porttype serial -p COM4 -c BTA+01 -I` to increase voltage reading by 50mV, can be run multiple times until the value is correct).
 
 ### You Get What You Pay For #3: BMS Communication
 The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 protocol is well-documented and also implemented in ESPHome.

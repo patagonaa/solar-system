@@ -5,55 +5,10 @@ $fn = $preview ? 16 : 64;
 // - USB-C-Position noch bisschen korrigiert
 // - Position der Buchsen gefixt (fangen auf Oberseite vom Board an, nicht Unterseite)
 // - Gesamthöhe reduziert (war für die Ethernet-Buchse so hoch)
+// V2.2:
+// - Beschriftung
 
 tolerance = 0.3;
-
-rj45boardSize = [34.2+tolerance, 28+tolerance, 1.4+tolerance];
-rj45holeDiameter = 2.8 - tolerance;
-rj45holeWidthDistance = 28;
-rj45hole1FrontPosition = -5.5;
-rj45hole2FrontPosition = -16.5;
-
-module rj45breakout()
-{
-    rj45jackCutout = 5;
-    boardThickness = 1.6;
-    rj45jackSize = [15.8, 18.3 + rj45jackCutout, 13.0];
-    rj45jackBottomDepth = 2.5;
-    rj45jackBottomExtraWidth = 4;
-    
-    rj45PinsSize = [25, 6, 2];
-    rj45PinsExtraSize = 4;
-    
-    difference()
-    {
-        union()
-        {
-        translate([-rj45boardSize.x/2, -rj45boardSize.y, -rj45boardSize.z])
-            cube(rj45boardSize);
-        translate([-rj45jackSize.x/2, -rj45jackSize.y + rj45jackCutout, 0])
-            color("grey")
-            cube(rj45jackSize);
-        translate([-rj45jackSize.x/2 - rj45jackBottomExtraWidth/2, -rj45jackSize.y, -boardThickness-rj45jackBottomDepth])
-            color("grey")
-            cube([rj45jackSize.x+rj45jackBottomExtraWidth, rj45jackSize.y, rj45jackBottomDepth]);
-            
-        translate([-rj45PinsSize.x/2,-rj45boardSize.y-rj45PinsExtraSize, -boardThickness-rj45PinsSize.z])
-            color("grey")
-            cube([rj45PinsSize.x, rj45PinsSize.y + rj45PinsExtraSize, rj45PinsSize.z]);
-            
-        }
-        
-        translate([rj45holeWidthDistance/2, rj45hole1FrontPosition])
-            cylinder(100, d=rj45holeDiameter, center=true);
-        translate([-rj45holeWidthDistance/2, rj45hole1FrontPosition])
-            cylinder(100, d=rj45holeDiameter, center=true);
-        translate([rj45holeWidthDistance/2, rj45hole2FrontPosition])
-            cylinder(100, d=rj45holeDiameter, center=true);
-        translate([-rj45holeWidthDistance/2, rj45hole2FrontPosition])
-            cylinder(100, d=rj45holeDiameter, center=true);
-    }
-}
 
 ttgo485Size = [35+tolerance, 81+tolerance];
 ttgo485BoardThickness = 1.2;
@@ -70,8 +25,11 @@ connectorExtraLength = 3;
 powerConnectorSize = [9, 9.2 + connectorExtraLength, 7.2];
 powerConnectorPos = [9.5, 5 + connectorExtraLength, 0];
 
+dataConnectorSize = [12.4, 9.2 + connectorExtraLength, 7.2];
+dataConnectorPos = [13.2, 5 + connectorExtraLength, 0];
+
 module ttgo485()
-{    
+{
     translate([-ttgo485Size.x/2, -ttgo485Size.y, -ttgo485BoardThickness])
         cube([ttgo485Size.x, ttgo485Size.y, ttgo485BoardThickness]);
         
@@ -86,9 +44,7 @@ module ttgo485()
             }
             sphere(tolerance);
         }
-    
-    dataConnectorSize = [12.4, 9.2 + connectorExtraLength, 7.2];
-    dataConnectorPos = [13.2, 5 + connectorExtraLength, 0];
+
     translate([ttgo485Size.x/2 - dataConnectorPos.x, -ttgo485Size.y - dataConnectorSize.y +dataConnectorPos.y, dataConnectorPos.z])
         color("grey")
         minkowski()
@@ -140,6 +96,8 @@ module case()
     ttgo485Holder2Width = 7;
     ttgo485Holder2Thickness = 4;
     
+    ttgo485TextDepth = 0.5;
+    
     
     difference()
     {
@@ -164,8 +122,80 @@ module case()
 
         translate([0, ttgo485Size.y, boardPosZ + ttgo485BoardThickness])
             ttgo485();
+            
+        translate([
+            caseSize.x/2 - dataConnectorPos.x + dataConnectorSize.x/2,
+            0,
+            caseSize.z + caseThickness - ttgo485TextDepth])
+        {
+            translate([-4,0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("A", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+            translate([0,7,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("485", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+            translate([4,0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("B", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+        }
+        translate([
+            -caseSize.x/2 + dataConnectorPos.x - dataConnectorSize.x/2,
+            0,
+            caseSize.z + caseThickness - ttgo485TextDepth])
+        {
+            translate([-4,0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("L", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+            translate([0,7,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("CAN", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+            translate([4,0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("H", font="Liberation Mono:bold", size=5, halign="left", valign="center");
+                }
+        }
+        translate([
+            -caseSize.x/2 + powerConnectorPos.x - powerConnectorSize.x/2,
+            caseSize.y,
+            caseSize.z + caseThickness - ttgo485TextDepth])
+        {
+            translate([-3,-0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("–", font="Liberation Mono:bold", size=5, halign="right", valign="center");
+                }
+            translate([0,-7,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("PWR", font="Liberation Mono:bold", size=5, halign="right", valign="center");
+                }
+            translate([3,-0.5,0])
+                rotate([0,0,90])
+                linear_extrude(ttgo485TextDepth + 0.01)
+                {
+                    text("+", font="Liberation Mono:bold", size=5, halign="right", valign="center");
+                }
+        }
     }
-
 }
 
 module diffPart()
@@ -202,8 +232,8 @@ if($preview){
     difference()
     {
         case();
-        translate([-12, -5, caseSize.z - 5])
-            cube(caseSize*2);
+//        translate([-12, -5, caseSize.z - 5])
+//            cube(caseSize*2);
     }
     translate([50,0,0])
         color("red", 1)
@@ -217,14 +247,13 @@ difference()
 }
 
 
-translate([-60, 0, caseSize.z])
-rotate([180,0,180])
-
-intersection()
-{
-    case();
-    diffPart();
-}
+translate([-45, 0, caseSize.z])
+    rotate([180,0,180])
+    intersection()
+    {
+        case();
+        diffPart();
+    }
 
 //diffPart();
 
@@ -232,9 +261,7 @@ if($preview)
 {
     translate([0, ttgo485Size.y, boardPosZ + ttgo485BoardThickness])
         ttgo485();
-    
-    translate([40, 0, 0])
-        rj45breakout();
+
     translate([80, 0, 0])
         ttgo485();
 }
