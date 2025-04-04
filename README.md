@@ -122,3 +122,12 @@ The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 pr
 However, as it turns out, the new (2023?) lineup of BMS from DALY (H/K/M/S series) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
 
 After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software had to be written _again_ (see [above](#protocol)).
+
+### You Get What You Pay For #4: LilyGO T-CAN485
+Again, how hard could it be to do RS485? (answer: apparently very hard)
+
+They use an MAX13487E transceiver, which has "AutoDirection Control", which means instead of driving the bus in both directions, resulting in in [0.4V, 5V, -5V] (idle, mark, space - with proper termination and bias), it only drives it in one direction, relying on the bias for the other direction, resulting in [0.4V, 0.4V, -5V]. This isn't great interfereence-wise, but it works and is spec-compliant.
+
+However, LilyGO chose to terminate the bus with 120Ω and bias it with 4.7kΩ, resulting in the voltages [0.06V, 0.06V, -5V], which just barely may or may not work. They could've omitted the termination, done the biasing right _or_ just use a "normal" transceiver (they have enough GPIOs to do so), but it seems they've instead chosen the perfect combination of parts to make it not work 🤦.
+
+Additionally, they also did the same as [#1: Transceiver Modules](#you-get-what-you-pay-for-1-rs485-transceiver-modules), so the protection circuitry doesn't really protect the transceiver as the protection ground isn't hooked up to the transceiver ground (besides a weak connection through 1MΩ + 1nF).
