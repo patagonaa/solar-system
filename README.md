@@ -13,23 +13,10 @@ So of course, I picked them up and as expected, the BMS PCBs were corroded to th
 
 After opening up the packs, letting them dry, cleaning up the limescale/corrosion and balancing them, all of the cells seem to be fine.
 
-### Case
-For transport, the batteries are mounted in a used flight case.
-I'm using an Anderson-style connector as interconnect between battery and inverter (and potentially other loads), which I've mounted towards the outside of the case so it can be used with the lids on.
-
-There are two parts two the mount,
-one that holds the connector (`cad/battery-connector-mount/battery-connector-mount.scad`)
-and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-connector-mount/plug-fill-adapter.scad`).
-The latter is pretty generic, the first is specific to the case and could be edited to make a lot stronger if it doesn't have to fit this specific case.
-
-![screenshot of the connector mount. it's a box around the connector with flanges with countersunk holes for panel mounting](img/04_battery_box/01_cad_connector_mount.jpg)
-![screenshot of a small part with two hex protrusions on a plate](img/04_battery_box/02_adapter.jpg)
-![photo of the front of the mount (with the connector hole and mounting flanges) lying on the flight case. There are two round cutouts for metal parts of the flight case](img/04_battery_box/03_front_on_case.jpg)
-![photo of the flight case with the mounted connector](img/04_battery_box/04_mounted_connector.jpg)
-![photo of the flight case with the lid open so you can see the wired up battery packs and BMS bus connections to the ESP32](img/01_battery/09_battery-with-esp.jpg)
-
 ### BMS
-To replace the corroded BMS I decided to get DALY 15S 100A "Smart" BMS modules.
+To replace the corroded BMS I decided to get DALY K-Series 15S 100A "Smart" BMS modules.
+
+If they had been available then, I'd probably have gone with the new DALY 100Balance BMS with 1A active balancing because the passive balancing of the K-Series is a bit weak for these huge cells.
 
 #### Mount
 
@@ -43,6 +30,21 @@ The design files can be found in `cad/bms-mount`.
 The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
 
 After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome component which I've released under [patagonaa/esphome-daly-hkms-bms](patagonaa/esphome-daly-hkms-bms).
+
+### Case
+For transport, the batteries are mounted in a used flight case.
+I'm using an Anderson-style connector as interconnect between battery and inverter (and other loads), which I've mounted towards the outside of the case so it can be used with the lids on.
+
+There are two parts two the mount:
+one that holds the connector (`cad/battery-connector-mount/battery-connector-mount.scad`)
+and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-connector-mount/plug-fill-adapter.scad`).
+The mount has later been adapted to be a lot stronger (due to not having to fit in the tight space on the lid) for the front panel.
+
+![screenshot of the connector mount. it's a box around the connector with flanges with countersunk holes for panel mounting](img/04_battery_box/01_cad_connector_mount.jpg)
+![screenshot of a small part with two hex protrusions on a plate](img/04_battery_box/02_adapter.jpg)
+![photo of the front of the mount (with the connector hole and mounting flanges) lying on the flight case. There are two round cutouts for metal parts of the flight case](img/04_battery_box/03_front_on_case.jpg)
+![photo of the flight case with the mounted connector](img/04_battery_box/04_mounted_connector.jpg)
+![photo of the flight case with the lid open so you can see the wired up battery packs and BMS bus connections to the ESP32](img/01_battery/09_battery-with-esp.jpg)
 
 ## Inverter
 I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the OEM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
@@ -87,15 +89,18 @@ Files in `cad/air-duct`.
 ## PSU
 To be able to limit the AC power input (for charging the batteries with a small generator) a Huawei R4830 PSU has been added to the inverter box as well. See the Mastodon thread and separate [Github Repo](https://github.com/patagonaa/huawei-r48xx) as well.
 
+For this, a second level has been added to the inverter box to hold the PSU, the necessary power distribution blocks and circuit breaker and some additional unrelated hardware (auxilary power circuit breaker, ESP32 board)
+
 ![Photo of the second level of the inverter box. A laminated board is mounted on the base plate with 3D printed spacers. The PSU, an ESP32, circuit breakers and power distribution blocks are mounted on the plate.](img/05_inverter_box/top-level.jpg)
 
 ## Misc other CAD parts
+- `cad/battery-connector-mount`: Panel mount for Anderson SB120 and SB50 connectors
 - `din-rail-plug`: Part that fits into the cutout for the DIN rail parts so not each unit has to be filled
 - `esp-box`: Case that fits a LilyGO TTGO T-CAN485 board (with CAN bus and RS485) and an RJ45 breakout board for the inverter RS485
     - v2 splits ESP and breakout board in separate cases
 - `cad/battery-bus-mount`: Mount for pluggable screw clamps which fits in the Battery RJ45 hole to interface with the BMS RS485
-- `cad/battery-connector-mount`: Mount for an Anderson Powerpole connector which fits in the Battery RJ45 hole to power an ESP32
-- `cad/lxcharger-end-cap`: End cap to replace the default barrel jack of an LXCHARGER H65AC with an XT30.
+- `cad/battery-aux-power-mount`: Mount for an Anderson Powerpole connector which fits in the Battery RJ45 hole to power an ESP32
+- `cad/lxcharger-end-cap`: End cap to replace the default barrel jack of an LXCHARGER H65AC DC-DC USB-C charger with an XT30.
 - `cad/mcb-mount`: Part to mount din-rail miniature circuit breakers on a board sideways
 - `cad/top-holder`: Holder to mount a board above the inverter to have make space for the PSU, power distribution blocks, etc. (printed with a pause to insert screw nut).
 
