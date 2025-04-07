@@ -26,6 +26,7 @@ The latter is pretty generic, the first is specific to the case and could be edi
 ![screenshot of a small part with two hex protrusions on a plate](img/04_battery_box/02_adapter.jpg)
 ![photo of the front of the mount (with the connector hole and mounting flanges) lying on the flight case. There are two round cutouts for metal parts of the flight case](img/04_battery_box/03_front_on_case.jpg)
 ![photo of the flight case with the mounted connector](img/04_battery_box/04_mounted_connector.jpg)
+![photo of the flight case with the lid open so you can see the wired up battery packs and BMS bus connections to the ESP32](img/01_battery/09_battery-with-esp.jpg)
 
 ### BMS
 To replace the corroded BMS I decided to get DALY 15S 100A "Smart" BMS modules.
