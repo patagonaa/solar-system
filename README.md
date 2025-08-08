@@ -2,6 +2,22 @@
 
 Build thread (german) at https://chaos.social/@patagona/113149877881417810
 
+## Overview
+
+This is sort-of build log / lessons learned of my off-grid solar system / battery backup.
+
+Specs/Features:
+- ~7.2kWh battery
+- \>5kW AC out
+- 5kW PV in
+- 2kW AC in (with configurable power limit)
+
+![Photo of the laser-cut frontpanel on the side of the euro container with all of the connectors fitted](img/05_inverter_box/frontpanel.jpg)
+
+![Photo of the second level of the inverter box. A laminated board is mounted on the base plate with 3D printed spacers. The PSU, an ESP32, circuit breakers and power distribution blocks are mounted on the plate.](img/05_inverter_box/top-level.jpg)
+
+![Photo of the battery. It's a black flight case with a large power connector embedded into the lid with an orange 3d printed part.](img/04_battery_box/05_entire_battery.jpg)
+
 ## Batteries
 Basically, what drove me to start this project.
 
@@ -47,7 +63,7 @@ The mount has later been adapted to be a lot stronger (due to not having to fit 
 ![photo of the flight case with the lid open so you can see the wired up battery packs and BMS bus connections to the ESP32](img/01_battery/09_battery-with-esp.jpg)
 
 ## Inverter
-I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the OEM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
+I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the ODM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
 
 ![picture of the inverter with two Schuko sockets and thick battery wires hooked up to it](img/03_inverter/01_inverter.jpg)
 
