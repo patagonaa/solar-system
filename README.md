@@ -45,7 +45,7 @@ The design files can be found in `cad/bms-mount`.
 #### Protocol
 The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
 
-After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome component which I've released under [patagonaa/esphome-daly-hkms-bms](patagonaa/esphome-daly-hkms-bms).
+After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome component which I've released under [patagonaa/esphome-daly-hkms-bms](https://github.com/patagonaa/esphome-daly-hkms-bms).
 
 ### Case
 For transport, the batteries are mounted in a used flight case.
@@ -103,7 +103,9 @@ Files in `cad/air-duct`.
 ![View from the outside, the orange 3D printed part fits perfectly into the Eurobox handle](img/05_inverter_box/air-duct-3.jpg)
 
 ## PSU
-To be able to limit the AC power input (for charging the batteries with a small generator) a Huawei R4830 PSU has been added to the inverter box as well. See the Mastodon thread and separate [Github Repo](https://github.com/patagonaa/huawei-r48xx) as well.
+To be able to limit the AC power input (for charging the batteries with a small generator) a Huawei R4830 PSU has been added to the inverter box as well.
+
+See my [Documentation](https://github.com/patagonaa/huawei-r48xx) and [ESPHome component](https://github.com/patagonaa/esphome-huawei-r4850) for more info about these PSUs.
 
 For this, a second level has been added to the inverter box to hold the PSU, the necessary power distribution blocks and circuit breaker and some additional unrelated hardware (auxilary power circuit breaker, ESP32 board)
 
