@@ -122,9 +122,8 @@ For this, a second level has been added to the inverter box to hold the PSU, the
 - `cad/mcb-mount`: Part to mount din-rail miniature circuit breakers on a board sideways
 - `cad/top-holder`: Holder to mount a board above the inverter to have make space for the PSU, power distribution blocks, etc. (printed with a pause to insert screw nut).
 
-## Lessons Learned
 
-### You Get What You Pay For #1: RS485 Transceiver Modules
+## You Get What You Pay For: RS485 Transceiver Modules
 ![picture of one of the RS485 transceiver modules](img/03_inverter/03_inverter-readout-setup-crop.jpg)
 
 The (pretty common) RS485 transceiver modules I used for inverter communication _do_ have a ground pin on the RS485 side. This does, however not mean it is actually connected to anything meaningful.
@@ -135,23 +134,53 @@ In some cases (for example, when both the PV input and the MCU are ground-refere
 
 Running a wire from the TTL-side ground to the RS485-side ground fixes that issue by giving the stray currents a direct path to flow.
 
-### You Get What You Pay For #2: Inverter Startup Voltage
+
+## You Get What You Pay For: Inverter
+
+### Startup Voltage
 At one point, the inverter just stopped working (when switching it on, it turned off itself after a few seconds). Turns out, there is an (undocumented) "cold start" voltage, that is hard-coded to be ~4V above the low-voltage cutoff. Means, when the low voltage cutoff is set to 45V, the inverter will just not start below ~49V.
 
 Also, the battery voltage readout was wrong by around 0.7V, however that could be fixed through a serial command (can be sent using [mpp-solar](https://github.com/jblance/mpp-solar): `mpp-solar --porttype serial -p COM4 -c BTA+01 -I` to increase voltage reading by 50mV, can be run multiple times until the value is correct).
 
-### You Get What You Pay For #3: BMS Communication
+### Questionable Isolation, EMF
+The different parts of the circuit (PV charger, battery DC-DC, AC Output) are isolated from each other, but still loosely coupled via (stray?) capacitances.
+
+When the AC output is on, it seems like the H-bridge switching the ~350V DC bus during zero-crossing causes a short but large voltage spike (~300v) that is coupled back to the PV input and can be measured between the PV input and PE.  
+This means, if PE is grounded, the solar panels and their wires become an antenna that radiates those pulses as EMF (probably, I didn't have anything to measure with).  
+If PE is _not_ grounded, the solar panels lying on the ground make a great plate capacitor to ground, making the PE and everything hooked up there an antenna instead.
+
+Those issues could probably be fixed / mitigated somewhat with an extra RF filter, however a 32 Amp RF filter sounds expensive.
+
+
+## You Get What You Pay For: DALY BMS
+
+### BMS Communication
 The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 protocol is well-documented and also implemented in ESPHome.
 
 However, as it turns out, the new (2023?) lineup of BMS from DALY (H/K/M/S series) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
 
 After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software had to be written _again_ (see [above](#protocol)).
 
-### You Get What You Pay For #4: LilyGO T-CAN485
+### Current measurment
+As it turns out, the BMS current measurment is messed up in several ways (see below).
+This also affects the couloumb counting / state-of-charge calculation.
+
+#### Miscalibration
+At the same current, the three BMS all showed different currents (up to a few 100mA). This could be solved by doing a calibration of all of them at 0 and 10A
+
+#### Sampling Rate
+The current measurement sample rate seems pretty low and there also seems to be no averaging at all. This means, when the AC inverter is on and pulls e.g. 10A RMS (as 50Hz sinusoidal half-waves), when polling the current every second, the readings may be 2 -> 12 -> 5 -> 1, instead of just showing a constant 10A.
+
+#### High Dead Zone / Low accuracy ADC
+The BMS simply does not measure anything below 100mA. When the inverter is off and there is just a small load from the ESPs etc., the BMS will just not measure anything.
+
+
+
+## You Get What You Pay For: LilyGO T-CAN485
 Again, how hard could it be to do RS485? (answer: apparently very hard)
 
 They use an MAX13487E transceiver, which has "AutoDirection Control", which means instead of driving the bus in both directions, resulting in in [0.4V, 5V, -5V] (idle, mark, space - with proper termination and bias), it only drives it in one direction, relying on the bias for the other direction, resulting in [0.4V, 0.4V, -5V]. This isn't great interfereence-wise, but it works and is spec-compliant.
 
 However, LilyGO chose to terminate the bus with 120Ω and bias it with 4.7kΩ, resulting in the voltages [0.06V, 0.06V, -5V], which just barely may or may not work. They could've omitted the termination, done the biasing right _or_ just use a "normal" transceiver (they have enough GPIOs to do so), but it seems they've instead chosen the perfect combination of parts to make it not work 🤦.
 
-Additionally, they also did the same as [#1: Transceiver Modules](#you-get-what-you-pay-for-1-rs485-transceiver-modules), so the protection circuitry doesn't really protect the transceiver as the protection ground isn't hooked up to the transceiver ground (besides a weak connection through 1MΩ + 1nF).
+Additionally, they also did the same as [#1: Transceiver Modules](#you-get-what-you-pay-for-rs485-transceiver-modules), so the protection circuitry doesn't really protect the transceiver as the protection ground isn't hooked up to the transceiver ground (besides a weak connection through 1MΩ + 1nF).
