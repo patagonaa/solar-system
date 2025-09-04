@@ -40,7 +40,7 @@ To mount the BMS, I designed some adapter / mounting plates that fit the origina
 
 ![the BMS mounted on a laser-cut wooden board screwed to original battery case standoffs](img/02_bms/05_bms-mounted-crop.jpg)
 
-The design files can be found in `cad/bms-mount`.
+The design files can be found in `cad/battery/bms-mount`.
 
 #### Protocol
 The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
@@ -52,9 +52,9 @@ For transport, the batteries are mounted in a used flight case.
 I'm using an Anderson-style connector as interconnect between battery and inverter (and other loads), which I've mounted towards the outside of the case so it can be used with the lids on.
 
 There are two parts two the mount:
-one that holds the connector (`cad/battery-connector-mount/battery-connector-mount.scad`)
-and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/battery-connector-mount/plug-fill-adapter.scad`).
-The mount has later been adapted to be a lot stronger (due to not having to fit in the tight space on the lid) for the front panel.
+one that holds the connector (`cad/battery/battery-sb120-mount/battery-connector-mount.scad`)
+and one for between mount and plug so the mount doesn't get squeezed when tightening the screws (`cad/inverter-box/frontpanel/handle-filler.scad`).
+The mount has later been adapted to be a lot stronger (due to not having to fit in the tight space on the lid) for the front panel (`cad/inverter-box/frontpanel/sbmount.scad`).
 
 ![screenshot of the connector mount. it's a box around the connector with flanges with countersunk holes for panel mounting](img/04_battery_box/01_cad_connector_mount.jpg)
 ![screenshot of a small part with two hex protrusions on a plate](img/04_battery_box/02_adapter.jpg)
@@ -80,12 +80,12 @@ The inverter has a RS232/RS485 interface which can be used to read data from the
 The inverter is mounted on a plate in a 60x40x22cm euro container for easy transport and (at least minimal) water-resistance,
 along with all the other necessary support hardware (circuit breakers, etc.).
 
-Files in `cad/box`.
+Files in `cad/inverter-box/box`.
 
 #### Front Panel
 There is a laser-cut front panel exposing all the important connections (DC, AC, PV) on the short side of the euro container.
 
-Files in `cad/frontpanel` (also includes the SB50/SB120 mounts, DIN rail mounts, etc.).
+Files in `cad/inverter-box/frontpanel` (also includes the SB50/SB120 mounts, DIN rail mounts, etc.).
 
 ![OpenSCAD screenshot of the front panel (see german Mastodon post for better alt text)](img/05_inverter_box/frontpanel-scad-1.png)
 ![OpenSCAD screenshot of the front panel](img/05_inverter_box/frontpanel-scad-2.png)
@@ -96,7 +96,7 @@ Files in `cad/frontpanel` (also includes the SB50/SB120 mounts, DIN rail mounts,
 To prevent overheating, an air duct was designed (in Fusion) and 3D printed to direct the warm air from the
 inverter fans directly out the Eurobox handle.
 
-Files in `cad/air-duct`.
+Files in `cad/inverter-box/air-duct`.
 
 ![Photo of the inside of the Eurobox. Between the inverter and the Eurobox is a neon orange 3D-printed air duct that curves from the fan outlet of the inverter to the Eurobox handle.](img/05_inverter_box/air-duct-1.jpg)
 ![Second view, the part is positioned with an edge at the top of the inverter and also has a flat area to the left and right of the fans for better sealing.](img/05_inverter_box/air-duct-2.jpg)
@@ -112,15 +112,15 @@ For this, a second level has been added to the inverter box to hold the PSU, the
 ![Photo of the second level of the inverter box. A laminated board is mounted on the base plate with 3D printed spacers. The PSU, an ESP32, circuit breakers and power distribution blocks are mounted on the plate.](img/05_inverter_box/top-level.jpg)
 
 ## Misc other CAD parts
-- `cad/battery-connector-mount`: Panel mount for Anderson SB120 and SB50 connectors
-- `din-rail-plug`: Part that fits into the cutout for the DIN rail parts so not each unit has to be filled
-- `esp-box`: Case that fits a LilyGO TTGO T-CAN485 board (with CAN bus and RS485) and an RJ45 breakout board for the inverter RS485
+- `cad/inverter-box/frontpanel/sbmount.scad`: Panel mount for Anderson SB120 and SB50 connectors
+- `cad/inverter-box/din-rail-plug/`: Part that fits into the cutout for the DIN rail parts so not each unit has to be filled
+- `cad/esp-box`: Case that fits a LilyGO TTGO T-CAN485 board (with CAN bus and RS485) and an RJ45 breakout board for the inverter RS485
     - v2 splits ESP and breakout board in separate cases
-- `cad/battery-bus-mount`: Mount for pluggable screw clamps which fits in the Battery RJ45 hole to interface with the BMS RS485
-- `cad/battery-aux-power-mount`: Mount for an Anderson Powerpole connector which fits in the Battery RJ45 hole to power an ESP32
+- `cad/battery/battery-fpconnector-bus`: Mount for pluggable screw clamps which fits in the Battery RJ45 hole to interface with the BMS RS485
+- `cad/battery/battery-fpconnector-aux-power`: Mount for an Anderson Powerpole connector which fits in the Battery RJ45 hole to power an ESP32
 - `cad/lxcharger-end-cap`: End cap to replace the default barrel jack of an LXCHARGER H65AC DC-DC USB-C charger with an XT30.
-- `cad/mcb-mount`: Part to mount din-rail miniature circuit breakers on a board sideways
-- `cad/top-holder`: Holder to mount a board above the inverter to have make space for the PSU, power distribution blocks, etc. (printed with a pause to insert screw nut).
+- `cad/inverter-box/mcb-mount`: Part to mount din-rail miniature circuit breakers on a board sideways
+- `cad/inverter-box/top-holder`: Holder to mount a board above the inverter to have make space for the PSU, power distribution blocks, etc. (printed with a pause to insert screw nut).
 
 
 ## You Get What You Pay For: RS485 Transceiver Modules
