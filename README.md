@@ -145,7 +145,7 @@ Also, the battery voltage readout was wrong by around 0.7V, however that could b
 ### Questionable Isolation, EMF
 The different parts of the circuit (PV charger, battery DC-DC, AC Output) are isolated from each other, but still loosely coupled via (stray?) capacitances.
 
-When the AC output is on, it seems like the H-bridge switching the ~350V DC bus during zero-crossing causes a short but large voltage spike (~300v) that is coupled back to the PV input and can be measured between the PV input and PE.  
+When the AC output is on, it seems like the H-bridge switching the ~350V DC bus during zero-crossing causes a short but large voltage spike (~300v) that is coupled back to the PV input and can be measured between the PV input and PE (and felt on the terminals!).  
 This means, if PE is grounded, the solar panels and their wires become an antenna that radiates those pulses as EMF (probably, I didn't have anything to measure with).  
 If PE is _not_ grounded, the solar panels lying on the ground make a great plate capacitor to ground, making the PE and everything hooked up there an antenna instead.
 
