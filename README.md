@@ -32,7 +32,9 @@ After opening up the packs, letting them dry, cleaning up the limescale/corrosio
 ### BMS
 To replace the corroded BMS I decided to get DALY K-Series 15S 100A "Smart" BMS modules.
 
-If they had been available then, I'd probably have gone with the new DALY 100Balance BMS with 1A active balancing because the passive balancing of the K-Series is a bit weak for these huge cells.
+I've since replaced these BMS modules again with DALY 100Balance BMS with 1A active balancing because the passive balancing of the K-Series is a bit weak for these huge cells.
+
+Unfortunately, when I started this project, they were not available yet.
 
 #### Mount
 
@@ -45,7 +47,8 @@ The design files can be found in `cad/battery/bms-mount`.
 #### Protocol
 The BMS has a UART, RS485 and CAN interface. There is already a DALY BMS integration using a UART interface in ESPHome, however that is for the older DALY BMS, not the new H/K/M/S-Series (for which there is already a [GitHub issue](https://github.com/esphome/issues/issues/5476)).
 
-After looking at the Windows software and the protocol documentation provided in the GitHub issue, I implemented the new protocol as an ESPHome component which I've released under [patagonaa/esphome-daly-hkms-bms](https://github.com/patagonaa/esphome-daly-hkms-bms).
+After writing an entire RS485-based ESPHome integration, I've realized that it's not really usable due to the non-standard "Modbus" implementation and other issues (see [BMS Communication](#bms-communication)).  
+I've since written a CAN-based integration available as [patagonaa/esphome-daly-hkms-bms-can](https://github.com/patagonaa/esphome-daly-hkms-bms-can) that works better.
 
 ### Case
 For transport, the batteries are mounted in a used flight case.
@@ -63,11 +66,17 @@ The mount has later been adapted to be a lot stronger (due to not having to fit 
 ![photo of the flight case with the lid open so you can see the wired up battery packs and BMS bus connections to the ESP32](img/01_battery/09_battery-with-esp.jpg)
 
 ## Inverter
-I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the ODM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap and has a lot of output power.
+I decided to go with a "EASun ISolar-SMH-II-7KW" (which is produced by the ODM "Voltronic", similar/equal devices are also sold under the names "MPPSolar", "PowMr", "Powland", "FSP", ...), mostly because it was cheap (<300€) and has a lot of output power.
+
+Datasheet: https://drive.google.com/file/d/1s9XwkGRsnE1rK3pe3qbGn26EQGxV9woU/view
 
 ![picture of the inverter with two Schuko sockets and thick battery wires hooked up to it](img/03_inverter/01_inverter.jpg)
 
-It wouldn't go up to the advertised 6.2kW in my testing (it already showed 99% load at around 5.4kW), but that might be battery current limited due to the relatively low battery voltage (15S LiFe instead of 16S LiFe or lead acid, still 120A!), so in combination with the solar input or with a higher input voltage, it should go even higher.
+#### Power Limit
+
+On battery power alone, with my 15S LiFe battery, the inverter already showed 99% load at around 5.4kW instead of the advertised 6.2kW. Further testing has showed that this is due to a (~120A) current limit of the DC-DC boost converter that generates the internal ~350V DC link from the 48V battery voltage.
+
+When combined with solar input (which also goes to the internal DC link), the inverter has no problem outputting 6.2kW continuously and even handles peaks of 7.2kW before switching off after 10 seconds (as specified in the datasheet).
 
 #### Protocol
 
@@ -154,12 +163,14 @@ Those issues could probably be fixed / mitigated somewhat with an extra RF filte
 
 ## You Get What You Pay For: DALY BMS
 
-### BMS Communication
-The DALY BMS comes with two TTL UART ports, CAN and RS485. The DALY BMS RS485 protocol is well-documented and also implemented in ESPHome.
+### UART BMS Communication
+The DALY BMS comes with two TTL UART ports, CAN and RS485.
 
-However, as it turns out, the new (2023?) lineup of BMS from DALY (H/K/M/S series) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
+There is a UART DALY BMS integration in ESPHome, however it turned out that the new (2023?) lineup of BMS from DALY (H/K/M/S series and 100Balance) use another communication protocol. This new protocol is called "Modbus" internally in the PC software and looks just like regular Modbus.
 
-After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries, so custom software had to be written _again_ (see [above](#protocol)).
+After some messing around with Modbus software and not getting it to work, I figured out that _the reply from the BMS has a different device id than the request_, which makes it completely incompatible with all available Modbus software / libraries.
+
+Additionally, the requests sometimes timed out, so I implemented the CAN protocol and switched to that instead (see [above](#protocol)).
 
 ### Current measurment
 As it turns out, the BMS current measurment is messed up in several ways (see below).
